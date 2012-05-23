@@ -502,7 +502,7 @@ blah..blah..blah
          (body (with-temp-buffer
                  (insert body-str)
                  (shell-command-on-region (point-min) (point-max) markdown-command t)
-                 (buffer-string)))
+                 (encode-coding-string (buffer-string) 'utf-8)))
          (id (assocref "id" props))
          (title (assocref "title" props))
          (tags (assocref "tags" props))
@@ -519,7 +519,7 @@ blah..blah..blah
            (tumblr-get-hostname)
          group)
        `(("post-id" . ,id)            ; WTF..api/read is "id", but api/write is "post-id"
-         ("title" . ,title)
+         ("title" . ,(encode-coding-string title 'utf-8))
          ("body" . ,body)
          ("tags" . ,tags)
          ("date" . ,date)
