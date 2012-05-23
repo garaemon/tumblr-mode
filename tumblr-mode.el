@@ -498,7 +498,11 @@ blah..blah..blah
                                 lines))
                       (error "Failed to parse the post, maybe format is wrong.")))))
          ;; get body content
-         (body (buffer-substring-no-properties body-start (point-max)))
+         (body-str (buffer-substring-no-properties body-start (point-max)))
+         (body (with-temp-buffer
+                 (insert body-str)
+                 (shell-command-on-region (point-min) (point-max) markdown-command t)
+                 (buffer-string)))
          (id (assocref "id" props))
          (title (assocref "title" props))
          (tags (assocref "tags" props))
